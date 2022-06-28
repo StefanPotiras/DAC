@@ -1,5 +1,5 @@
 ﻿
-using DAC.Models;
+using DAC.Entities;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -45,7 +45,7 @@ namespace DAC
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var roleClaim = new Claim("role", "User");
-            var idClaim = new Claim("userId", user.IdUser.ToString());
+            var idClaim = new Claim("userId", user.Id.ToString());
             var infoClaim = new Claim("username", user.Username);
 
             var tokenDescriptior = new SecurityTokenDescriptor

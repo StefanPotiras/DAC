@@ -1,4 +1,4 @@
-using DAC.Models;
+using DAC.Entities;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -54,7 +54,7 @@ namespace DAC
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Laborator", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "DAC", Version = "v1" });
             });
 
             services.AddCors(options => options.AddPolicy("AllowAll", p => p.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
@@ -71,7 +71,7 @@ namespace DAC
 
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/api/swagger/v1/swagger.json", "Laborator");
+                c.SwaggerEndpoint("/api/swagger/v1/swagger.json", "DAC");
                 c.RoutePrefix = "api/swagger";
             });
 
@@ -93,7 +93,7 @@ namespace DAC
         private void AddDependencies(IServiceCollection services)
         {
             services
-                .AddDbContext<Online_Shop2Context>(options => options
+                .AddDbContext<ShopContext>(options => options
                     .UseSqlServer(Configuration.GetConnectionString("OnlineShopDB")));
 
             //Repositories

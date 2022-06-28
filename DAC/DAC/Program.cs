@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -14,6 +15,14 @@ namespace DAC
         public static void Main(string[] args)
         {
             CreateHostBuilder(args).Build().Run();
+            //var options = new DbContextOptionsBuilder<ShopContext>()
+            //  .UseSqlServer(@"Server=localhost\SQLEXPRESS;Database=Shop;Trusted_Connection=True;")
+            //  .Options;
+            //using (var db = new ShopContext(options))
+            //{
+            //   db.Database.EnsureDeleted();
+            //    db.Database.EnsureCreated();
+            //}
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>

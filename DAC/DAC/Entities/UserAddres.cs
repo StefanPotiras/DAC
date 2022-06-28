@@ -1,21 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
 
-#nullable disable
-
-namespace DAC.Models
+namespace DAC.Entities
 {
-    public partial class UserAddress
+    public class UserAddres : BaseEntity
     {
-        public int Id { get; set; }
         public string City { get; set; }
+        [MaxLength(3)]
         public string PostalCod { get; set; }
+        [MaxLength(50)]
         public string Country { get; set; }
+        [MaxLength(10)]
         public string MobileNumber { get; set; }
+        [MaxLength(50)]
         public string StreetName { get; set; }
         public byte StreetNr { get; set; }
-        public int IdUser { get; set; }
 
-        public virtual User IdUserNavigation { get; set; }
+        public User User;
     }
 }
