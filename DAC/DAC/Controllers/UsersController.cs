@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using DAC.Models;
+using DAC.Dtos;
 
 namespace DAC.Controllers
 {
@@ -20,6 +21,31 @@ namespace DAC.Controllers
             _context = context;
             _authorization = authorization;
         }
+
+        //[HttpPost]
+        //[Route("register")]
+       /* public async Task<ActionResult<bool>> Register([FromBody] RegisterUserDto request)
+        {
+            if (request == null)
+            {
+                BadRequest(error: "Request must not be empty!");
+            }
+
+            var hashedPassword = _authorization.HashPassword(request.Password);
+
+            var user = new User()
+            {
+                FirstName = request.FirstName,
+                LastName = request.LastName,
+                PasswordHash = hashedPassword,
+                Email = request.Email,
+            };
+
+            _unitOfWork.Users.Insert(user);
+            var saveResult = await _unitOfWork.SaveChangesAsync();
+
+            return Ok(saveResult);
+        }*/
 
         // GET: api/Users
         [HttpGet]
