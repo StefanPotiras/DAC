@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\StefanPotiras\\source\\repos\\DAC\\DAC\\DAC.csproj": {}
+    "C:\\Users\\StefanPotiras\\Documents\\GitHub\\DAC\\DAC\\DAC\\DAC.csproj": {}
   },
   "projects": {
-    "C:\\Users\\StefanPotiras\\source\\repos\\DAC\\DAC\\DAC.csproj": {
+    "C:\\Users\\StefanPotiras\\Documents\\GitHub\\DAC\\DAC\\DAC\\DAC.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\StefanPotiras\\source\\repos\\DAC\\DAC\\DAC.csproj",
+        "projectUniqueName": "C:\\Users\\StefanPotiras\\Documents\\GitHub\\DAC\\DAC\\DAC\\DAC.csproj",
         "projectName": "DAC",
-        "projectPath": "C:\\Users\\StefanPotiras\\source\\repos\\DAC\\DAC\\DAC.csproj",
+        "projectPath": "C:\\Users\\StefanPotiras\\Documents\\GitHub\\DAC\\DAC\\DAC\\DAC.csproj",
         "packagesPath": "C:\\Users\\StefanPotiras\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\StefanPotiras\\source\\repos\\DAC\\DAC\\obj\\",
+        "outputPath": "C:\\Users\\StefanPotiras\\Documents\\GitHub\\DAC\\DAC\\DAC\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
@@ -44,20 +44,6 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "dependencies": {
-            "Microsoft.AspNetCore.Authentication.JwtBearer": {
-              "target": "Package",
-              "version": "[5.0.0, )"
-            },
-            "Microsoft.EntityFrameworkCore": {
-              "target": "Package",
-              "version": "[5.0.0, )"
-            },
-            "Microsoft.EntityFrameworkCore.Design": {
-              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
-              "suppressParent": "All",
-              "target": "Package",
-              "version": "[5.0.0, )"
-            },
             "Microsoft.EntityFrameworkCore.SqlServer": {
               "target": "Package",
               "version": "[5.0.0, )"
@@ -69,10 +55,6 @@
               "version": "[5.0.0, )"
             },
             "Swashbuckle.AspNetCore": {
-              "target": "Package",
-              "version": "[5.6.3, )"
-            },
-            "Swashbuckle.AspNetCore.Swagger": {
               "target": "Package",
               "version": "[5.6.3, )"
             }
