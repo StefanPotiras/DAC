@@ -14,16 +14,26 @@ namespace DAC.Controllers
     public class UsersController : ControllerBase
     {
         private readonly Online_Shop2Context _context;
-
-        public UsersController(Online_Shop2Context context)
+        private readonly ICustomerAuthService _authorization;
+        public UsersController(Online_Shop2Context context, ICustomerAuthService authorization)
         {
             _context = context;
+            _authorization = authorization;
         }
 
         // GET: api/Users
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
+            User user = new User()
+            {
+                Username = "hey",
+                Password = "234",
+                IsAdmin = false,
+                IdUser = 1
+            };
+            _authorization.GetToken(user);
+
             return await _context.Users.ToListAsync();
         }
 
