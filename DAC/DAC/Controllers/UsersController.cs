@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using DAC;
 using DAC.Entities;
+using DAC.Repositories;
+using DAC.Dtos;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DAC.Controllers
 {
@@ -16,13 +19,61 @@ namespace DAC.Controllers
     {
         private readonly ShopContext _context;
 
-        public UsersController(ShopContext context)
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly ICustomerAuthService _authorization;
+
+        public UsersController(ShopContext context, IUnitOfWork unitOfWork, ICustomerAuthService authorization)
         {
             _context = context;
+            _unitOfWork = unitOfWork;
+            _authorization = authorization;
+        }
+        [HttpPost]
+        [Route("register")]
+        public async Task<ActionResult<bool>> Register([FromBody] RegisterUserDto request)
+        {
+            if (request == null)
+            {
+                BadRequest(error: "Request must not be empty!");
+            }
+            var user1 = _unitOfWork.Users.GetUserByUsername(request.Username);
+            if (user1 != null) return BadRequest("Change Username");
+            var hashedPassword = _authorization.HashPassword(request.Password);
+
+            var user = new User()
+            {         
+               Password= hashedPassword,
+               Username=request.Username,
+               IsAdmin=false
+            };
+
+            _unitOfWork.Users.Insert(user);
+            var saveResult = await _unitOfWork.SaveChangesAsync();
+
+            return Ok(saveResult);
+        }
+
+        [HttpPost]
+        [Route("login")]
+        public ActionResult<ResponseLogin> Login([FromBody] RequestLogin request)
+        {
+            var user = _unitOfWork.Users.GetUserByUsername(request.Uername);
+            if (user == null) return BadRequest("User not found!");
+
+            var samePassword = _authorization.VerifyHashedPassword(user.Password, request.Password);
+            if (!samePassword) return BadRequest("Invalid password!");
+
+            var user_jsonWebToken = _authorization.GetToken(user);
+
+            return Ok(new ResponseLogin
+            {
+                Token = user_jsonWebToken
+            });
         }
 
         // GET: api/Users
         [HttpGet]
+        [Authorize(Roles = "User")]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
             return await _context.Users.ToListAsync();

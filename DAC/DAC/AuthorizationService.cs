@@ -43,8 +43,10 @@ namespace DAC
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_securityKey));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+          
+            
+            var roleClaim = new Claim("role", user.IsAdmin ? "Admin" : "User");
 
-            var roleClaim = new Claim("role", "User");
             var idClaim = new Claim("userId", user.Id.ToString());
             var infoClaim = new Claim("username", user.Username);
 

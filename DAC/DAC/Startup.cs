@@ -1,5 +1,6 @@
+using DAC.Dtos;
 using DAC.Entities;
-
+using DAC.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -97,9 +98,9 @@ namespace DAC
                     .UseSqlServer(Configuration.GetConnectionString("OnlineShopDB")));
 
             //Repositories
-            //services.AddScoped<IUnitOfWork, UnitOfWork>();
-            //services.AddScoped<IUserRepository, UserRepository>();
-            //services.AddScoped<INotificationsRepository, NotificationsRepository>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IUserRepository, Dtos.UserRepository>();
+           
 
             //Services
             services.AddScoped<ICustomerAuthService, CustomerAuthService>();

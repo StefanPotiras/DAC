@@ -10,7 +10,7 @@ namespace DAC.Dtos
 
     public interface IUserRepository : IRepositoryBase<User>
     {
-        User GetUserByEmail(string name);
+        User GetUserByUsername(string name);
       
     }
 
@@ -20,7 +20,7 @@ namespace DAC.Dtos
         public UserRepository(ShopContext context) : base(context) { }
 
 
-        public User GetUserByEmail(string email)
+        public User GetUserByUsername(string username)
         {
             //SELECT TOP(1) * from Users as u
             var result = GetRecords()
@@ -30,7 +30,7 @@ namespace DAC.Dtos
 
                 // WHERE u.Email = @email 
                 // IQueryable pana aici -> rezultatul nu e concret
-                .Where(u => u.Username == email)
+                .Where(u => u.Username == username)
 
                 .FirstOrDefault();
             // -> rezultat concret
