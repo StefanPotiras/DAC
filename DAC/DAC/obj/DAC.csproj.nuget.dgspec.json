@@ -1,25 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\StefanPotiras\\Documents\\GitHub\\DAC\\DAC\\DAC\\DAC.csproj": {}
+    "C:\\Users\\EmilBotezatu\\Work\\Facultate\\MVP\\DAC\\DAC\\DAC\\DAC.csproj": {}
   },
   "projects": {
-    "C:\\Users\\StefanPotiras\\Documents\\GitHub\\DAC\\DAC\\DAC\\DAC.csproj": {
+    "C:\\Users\\EmilBotezatu\\Work\\Facultate\\MVP\\DAC\\DAC\\DAC\\DAC.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\StefanPotiras\\Documents\\GitHub\\DAC\\DAC\\DAC\\DAC.csproj",
+        "projectUniqueName": "C:\\Users\\EmilBotezatu\\Work\\Facultate\\MVP\\DAC\\DAC\\DAC\\DAC.csproj",
         "projectName": "DAC",
-        "projectPath": "C:\\Users\\StefanPotiras\\Documents\\GitHub\\DAC\\DAC\\DAC\\DAC.csproj",
-        "packagesPath": "C:\\Users\\StefanPotiras\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\StefanPotiras\\Documents\\GitHub\\DAC\\DAC\\DAC\\obj\\",
+        "projectPath": "C:\\Users\\EmilBotezatu\\Work\\Facultate\\MVP\\DAC\\DAC\\DAC\\DAC.csproj",
+        "packagesPath": "C:\\Users\\EmilBotezatu\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\EmilBotezatu\\Work\\Facultate\\MVP\\DAC\\DAC\\DAC\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\StefanPotiras\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+          "C:\\Users\\EmilBotezatu\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net5.0"
@@ -109,7 +109,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.203\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.300\\RuntimeIdentifierGraph.json"
         }
       }
     }

@@ -20,6 +20,7 @@ namespace DAC.Controllers
         private readonly ShopContext _context;
 
         private readonly IUnitOfWork _unitOfWork;
+        
         private readonly ICustomerAuthService _authorization;
 
         public UsersController(ShopContext context, IUnitOfWork unitOfWork, ICustomerAuthService authorization)
@@ -28,24 +29,26 @@ namespace DAC.Controllers
             _unitOfWork = unitOfWork;
             _authorization = authorization;
         }
-        //[HttpPut]
-        //[Route("my-account")]
-     
-        //public ActionResult<bool> AddProducts([FromBody]ProductAdd product)
-        //{
-        //      var productFull = _unitOfWork.Products.GetProductBy(Guid.Parse(product.Product));
-        //        var userId = GetUserId();
-        //        if (userId == null) return Unauthorized();
+        [HttpPut]
+        [Route("product")]
+        public ActionResult<bool> AddProducts([FromBody] ProductAdd product)
+        {
+            var productFull = _unitOfWork.Products.GetProductBy(Guid.Parse(product.Product));
+            var userId = GetUserId();
+            if (userId == null) return Unauthorized();
 
-        //        var user = _unitOfWork.Users.GetUserById((Guid)userId);
+            var user = _unitOfWork.Users.GetUserById((Guid)userId);
+            var cart = _unitOfWork.Carts.GetCartBy(user.Id);
+            cart.Products.Add(productFull);
+            //user.Cart.Products.Add(productFull);
+            _context.Entry(cart).State = EntityState.Modified;
+            _context.SaveChanges();
 
-        //        user.Cart.Products.Add(productFull);
-        //        _context.Entry(user).State = EntityState.Modified;
-        //        _context.SaveChanges();
+            return Ok();
 
-        //        return Ok();
-            
-        //}
+        }
+
+
         [HttpPost]
         [Route("register")]
         public async Task<ActionResult<bool>> Register([FromBody] RegisterUserDto request)
@@ -67,8 +70,9 @@ namespace DAC.Controllers
               
             };
             cart.User = user;
+     
             _unitOfWork.Users.Insert(user);
-            
+            _unitOfWork.Carts.Insert(cart);
             var saveResult = await _unitOfWork.SaveChangesAsync();
 
             return Ok(saveResult);

@@ -15,14 +15,14 @@ namespace DAC
         public static void Main(string[] args)
         {
             CreateHostBuilder(args).Build().Run();
-            //var options = new DbContextOptionsBuilder<ShopContext>()
-            //    .UseSqlServer(@"Server=localhost\SQLEXPRESS;Database=Shop;Trusted_Connection=True;")
-            //  .Options;
-            //using (var db = new ShopContext(options))
-            //{
-            //    db.Database.EnsureDeleted();
-            //    db.Database.EnsureCreated();
-            //}
+            /*var options = new DbContextOptionsBuilder<ShopContext>()
+                .UseSqlServer(@"Data Source=LAPTOP-RBJPENMM;Initial Catalog=Shop;Integrated Security=True;Connect Timeout=30;")
+              .Options;
+            using (var db = new ShopContext(options))
+            {
+                db.Database.EnsureDeleted();
+                db.Database.EnsureCreated();
+            }*/
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
