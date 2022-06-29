@@ -273,3 +273,10 @@ C:\Users\StefanPotiras\Documents\GitHub\DAC\DAC\DAC\bin\Debug\net5.0\Microsoft.D
 C:\Users\StefanPotiras\Documents\GitHub\DAC\DAC\DAC\bin\Debug\net5.0\Microsoft.Extensions.DependencyModel.dll
 C:\Users\StefanPotiras\Documents\GitHub\DAC\DAC\DAC\bin\Debug\net5.0\Microsoft.Extensions.PlatformAbstractions.dll
 C:\Users\StefanPotiras\Documents\GitHub\DAC\DAC\DAC\bin\Debug\net5.0\Swashbuckle.Swagger.dll
+C:\Users\EmilBotezatu\Work\Facultate\MVP\DAC\DAC\DAC\bin\Debug\net5.0\Microsoft.AspNetCore.JsonPatch.dll
+C:\Users\EmilBotezatu\Work\Facultate\MVP\DAC\DAC\DAC\bin\Debug\net5.0\Microsoft.DotNet.InternalAbstractions.dll
+C:\Users\EmilBotezatu\Work\Facultate\MVP\DAC\DAC\DAC\bin\Debug\net5.0\Microsoft.Extensions.DependencyModel.dll
+C:\Users\EmilBotezatu\Work\Facultate\MVP\DAC\DAC\DAC\bin\Debug\net5.0\Microsoft.Extensions.PlatformAbstractions.dll
+C:\Users\EmilBotezatu\Work\Facultate\MVP\DAC\DAC\DAC\bin\Debug\net5.0\Swashbuckle.Swagger.dll
+C:\Users\EmilBotezatu\Work\Facultate\MVP\DAC\DAC\DAC\bin\Debug\net5.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+C:\Users\EmilBotezatu\Work\Facultate\MVP\DAC\DAC\DAC\bin\Debug\net5.0\Newtonsoft.Json.Bson.dll

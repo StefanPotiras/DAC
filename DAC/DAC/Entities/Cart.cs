@@ -7,7 +7,7 @@ namespace DAC.Entities
 {
     public class Cart : BaseEntity
     {
-        public User Id_user { get; set; }
+        //public User Id_user { get; set; }
         public ICollection<Product> Products { get; set; }
         Cart()
         {

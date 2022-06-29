@@ -24,6 +24,7 @@ namespace DAC.Entities
         public ICollection<Order> Orders { get; set; }
         public ICollection<UserAddres> UserAddresses { get; set; }
         public ICollection<UserPayment> UserPayments { get; set; }
+        public Cart Cart { get; set; }
 
     }
 }

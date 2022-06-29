@@ -26,7 +26,7 @@ namespace DAC
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddHttpClient();
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson();
             AddDependencies(services);
 
             services.AddAuthentication(options =>
