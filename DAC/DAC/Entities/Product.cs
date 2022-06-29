@@ -17,9 +17,11 @@ namespace DAC.Entities
         public ICollection<Cart> Carts { get; set; }
         public ICollection<Order> Orders { get; set; }
        public Product()
-        {
+        {  
             Carts = new HashSet<Cart>();
             Orders = new HashSet<Order>();
+            Description = "";
+            Name = "";
         }
     }
 }

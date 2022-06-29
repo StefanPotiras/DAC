@@ -13,7 +13,7 @@ namespace DAC.Entities
           
             Orders = new HashSet<Order>();
             UserPayments = new HashSet<UserPayment>();
-            UserAddresses = new HashSet<UserAddres>();
+            UserAddresses = new HashSet<UserAddres>();      
         }
         [MaxLength(50)]
         public string Username { get; set; }
@@ -24,7 +24,7 @@ namespace DAC.Entities
         public ICollection<Order> Orders { get; set; }
         public ICollection<UserAddres> UserAddresses { get; set; }
         public ICollection<UserPayment> UserPayments { get; set; }
-        public Cart Cart { get; set; }
+       
 
     }
 }

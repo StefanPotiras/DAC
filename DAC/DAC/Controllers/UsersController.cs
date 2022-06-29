@@ -28,23 +28,24 @@ namespace DAC.Controllers
             _unitOfWork = unitOfWork;
             _authorization = authorization;
         }
-        [HttpPut]
-        [Route("my-account")]
-       
-        public ActionResult<bool> AddProducts(Guid product)
-        {
-            var productFull = _unitOfWork.Products.GetProductBy(product);
-            var userId = GetUserId();
-            if (userId == null) return Unauthorized();
+        //[HttpPut]
+        //[Route("my-account")]
+     
+        //public ActionResult<bool> AddProducts([FromBody]ProductAdd product)
+        //{
+        //      var productFull = _unitOfWork.Products.GetProductBy(Guid.Parse(product.Product));
+        //        var userId = GetUserId();
+        //        if (userId == null) return Unauthorized();
 
-            var user = _unitOfWork.Users.GetUserById((Guid)userId);
-         
-            user.Cart.Products.Add(productFull);
-            _context.Entry(user).State = EntityState.Modified;
-            _context.SaveChanges();
+        //        var user = _unitOfWork.Users.GetUserById((Guid)userId);
 
-            return Ok();
-        }
+        //        user.Cart.Products.Add(productFull);
+        //        _context.Entry(user).State = EntityState.Modified;
+        //        _context.SaveChanges();
+
+        //        return Ok();
+            
+        //}
         [HttpPost]
         [Route("register")]
         public async Task<ActionResult<bool>> Register([FromBody] RegisterUserDto request)
@@ -56,15 +57,18 @@ namespace DAC.Controllers
             var user1 = _unitOfWork.Users.GetUserByUsername(request.Username);
             if (user1 != null) return BadRequest("Change Username");
             var hashedPassword = _authorization.HashPassword(request.Password);
-
+            var cart = new Cart();
+            
             var user = new User()
-            {         
-               Password= hashedPassword,
-               Username=request.Username,
-               IsAdmin=false
+            {
+                Password = hashedPassword,
+                Username = request.Username,
+                IsAdmin = false,
+              
             };
-
+            cart.User = user;
             _unitOfWork.Users.Insert(user);
+            
             var saveResult = await _unitOfWork.SaveChangesAsync();
 
             return Ok(saveResult);
