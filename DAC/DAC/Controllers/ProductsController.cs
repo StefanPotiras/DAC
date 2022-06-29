@@ -70,59 +70,61 @@ namespace DAC.Controllers
         }
 
         // PUT: api/Products/5      
+        //Admin
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutProduct(Guid id, Product product)
+        //[Authorize(Roles = "Admin")]
+        public async Task<IActionResult> PutProduct(Guid id, ProductsDto product)
         {
-            if (id != product.Id)
-            {
-                return BadRequest();
-            }
+            var productDb = _unitOfWork.Products.GetProductBy(id);
+            productDb.Name = product.Name;
+            product.Description = product.Description;
+            product.Price = product.Price;
+            product.Description = product.Description;
+            _unitOfWork.Products.Update(productDb);
+            var saveResult = await _unitOfWork.SaveChangesAsync();
 
-            _context.Entry(product).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ProductExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            return Ok(Tuple.Create(saveResult, productDb));
         }
 
         // POST: api/Products
+        //Admin
         [HttpPost]
-        public async Task<ActionResult<Product>> PostProduct(Product product)
+        public async Task<ActionResult<Product>> PostProduct([FromBody]ProductsDto product)
         {
-            _context.Products.Add(product);
-            await _context.SaveChangesAsync();
+            if (product == null)
+            {
+                BadRequest(error: "Request must not be empty!");
+            }
 
-            return CreatedAtAction("GetProduct", new { id = product.Id }, product);
+            var Product = new Product()
+            {
+                Name = product.Name,
+                Price = product.Price,
+                Description = product.Description,
+                NumberOfItems = product.NumberOfItems,
+
+            };
+            _unitOfWork.Products.Insert(Product);
+            var saveResult = await _unitOfWork.SaveChangesAsync();
+
+            return Ok(Tuple.Create(saveResult,product));
         }
 
         // DELETE: api/Products/5
+        //Admin
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProduct(Guid id)
         {
-            var product = await _context.Products.FindAsync(id);
+            var product = _unitOfWork.Products.GetById(id);
             if (product == null)
             {
                 return NotFound();
             }
 
-            _context.Products.Remove(product);
-            await _context.SaveChangesAsync();
+            _unitOfWork.Products.Delete(product);
 
-            return NoContent();
+            var saveResult = await _unitOfWork.SaveChangesAsync();
+            return Ok(saveResult);
         }
 
         private bool ProductExists(Guid id)

@@ -42,7 +42,8 @@ namespace DAC.Controllers
         {
             var userId = GetUserId();
             if (userId == null) return Unauthorized();
-            var allOrders = _unitOfWork.Orders.GetOrderByUser(userId);       
+            var allOrders = _unitOfWork.Orders.GetOrderByUser(userId);
+            if (allOrders.Count == 0) return BadRequest("No orders");
             return Ok(allOrders);
            
         }
@@ -98,33 +99,23 @@ namespace DAC.Controllers
 
         // PUT: api/Orders/5     
         [HttpPut("{id}")]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> PutOrder(Guid id, Order order)
+        //[Authorize(Roles = "Admin")]
+        public async Task<IActionResult> UpdateOrderStatus(Guid id,StatusDtos statusDtos )
         {
-            if (id != order.Id)
+            if (statusDtos == null)
             {
-                return BadRequest();
+                BadRequest(error: "Request must not be empty!");
             }
 
-            _context.Entry(order).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!OrderExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            var orderDb = _unitOfWork.Orders.GetOrderBy(id);
+            orderDb.OrderStatus = statusDtos.OrderStatus;
+           
+            _unitOfWork.Orders.Update(orderDb);
+            var saveResult = await _unitOfWork.SaveChangesAsync();
+            if(saveResult==true)
+            return Ok(Tuple.Create(saveResult, orderDb));
+            else
+                return Ok(saveResult);
         }
 
       
