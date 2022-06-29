@@ -15,7 +15,7 @@ namespace DAC.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : ControllerBase
+    public class UsersController : WebApiController
     {
         private readonly ShopContext _context;
 
@@ -27,6 +27,23 @@ namespace DAC.Controllers
             _context = context;
             _unitOfWork = unitOfWork;
             _authorization = authorization;
+        }
+        [HttpPut]
+        [Route("my-account")]
+       
+        public ActionResult<bool> AddProducts(Guid product)
+        {
+            var productFull = _unitOfWork.Products.GetProductBy(product);
+            var userId = GetUserId();
+            if (userId == null) return Unauthorized();
+
+            var user = _unitOfWork.Users.GetUserById((Guid)userId);
+         
+            user.Cart.Products.Add(productFull);
+            _context.Entry(user).State = EntityState.Modified;
+            _context.SaveChanges();
+
+            return Ok();
         }
         [HttpPost]
         [Route("register")]

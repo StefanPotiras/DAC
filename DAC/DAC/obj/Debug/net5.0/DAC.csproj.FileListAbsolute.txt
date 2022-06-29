@@ -280,3 +280,5 @@ C:\Users\EmilBotezatu\Work\Facultate\MVP\DAC\DAC\DAC\bin\Debug\net5.0\Microsoft.
 C:\Users\EmilBotezatu\Work\Facultate\MVP\DAC\DAC\DAC\bin\Debug\net5.0\Swashbuckle.Swagger.dll
 C:\Users\EmilBotezatu\Work\Facultate\MVP\DAC\DAC\DAC\bin\Debug\net5.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
 C:\Users\EmilBotezatu\Work\Facultate\MVP\DAC\DAC\DAC\bin\Debug\net5.0\Newtonsoft.Json.Bson.dll
+C:\Users\StefanPotiras\Documents\GitHub\DAC\DAC\DAC\bin\Debug\net5.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+C:\Users\StefanPotiras\Documents\GitHub\DAC\DAC\DAC\bin\Debug\net5.0\Newtonsoft.Json.Bson.dll

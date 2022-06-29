@@ -100,7 +100,7 @@ namespace DAC
             //Repositories
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IUserRepository, Dtos.UserRepository>();
-           
+            services.AddScoped<IProductRepository, Repositories.ProductRepository>();
 
             //Services
             services.AddScoped<ICustomerAuthService, CustomerAuthService>();

@@ -11,7 +11,8 @@ namespace DAC.Repositories
     public interface IUnitOfWork
     {
         IUserRepository Users { get; }
-     
+        IProductRepository Products { get; }
+
         Task<bool> SaveChangesAsync();
 
     }
@@ -20,17 +21,21 @@ namespace DAC.Repositories
 
         private readonly DbContext _efDbContext;
         public IUserRepository Users { get; set; }
-        
+
+        public IProductRepository Products { get; set; }
 
         public UnitOfWork
         (
             ShopContext efDbContext,
-            IUserRepository users
+            IUserRepository users,
+            IProductRepository productRepository
                 )
         {
             _efDbContext = efDbContext;
             Users = users;
-           
+            Products = productRepository;
+
+
 
         }
 

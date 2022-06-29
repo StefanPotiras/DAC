@@ -16,7 +16,7 @@ namespace DAC.Entities
         public int NumberOfItems { get; set; }
         public ICollection<Cart> Carts { get; set; }
         public ICollection<Order> Orders { get; set; }
-        Product()
+       public Product()
         {
             Carts = new HashSet<Cart>();
             Orders = new HashSet<Order>();
