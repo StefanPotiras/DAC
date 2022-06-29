@@ -49,36 +49,37 @@ namespace DAC.Controllers
 
         [HttpPut]
         [Route("orderItem")]
-        public ActionResult<bool> AddOrders()
+        public async Task<ActionResult<bool>> AddOrdersAsync()
         {
             var userId = GetUserId();
             if (userId == null) return Unauthorized();
 
             var cart = _unitOfWork.Carts.GetCartBy(userId);
-
-            var product = _context.Carts
-                .Include(cart => cart.Products)
-                .Include(roomType => roomType.Id)
-                .Include(roomType => roomType.User)
-                .Include(roomType => roomType.CreatedAt).Where(rt => rt.User.Id == userId);
-
+              
             var user = _unitOfWork.Users.GetUserById((Guid)userId);
 
             Order newOrder = new Order()
             {
                 OrderStatus = Order.EOrderStatus.Processing,
-                User = user,
-                Products = cart.Products
+                User = user,            
             };
-            _unitOfWork.Orders.Insert(newOrder);
+            _unitOfWork.Orders.Insert(newOrder);         
+            var saveResult = await _unitOfWork.SaveChangesAsync();
 
-            cart.Products.Clear();
+            var order = _unitOfWork.Orders.GetOrderBy(newOrder.Id);
 
+            foreach(var index in cart.Products)           
+                order.Products.Add(index);
+
+             cart.Products.Clear();
             _context.Entry(cart).State = EntityState.Modified;
             _context.SaveChanges();
 
-            return Ok();
 
+            return Ok(saveResult);
+
+            
+                  
         }
 
         // PUT: api/Orders/5

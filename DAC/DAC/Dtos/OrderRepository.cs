@@ -1,4 +1,5 @@
 ﻿using DAC.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +19,8 @@ namespace DAC.Repositories
         public Order GetOrderBy(Guid ID)
         {
             var result = GetRecords()
-                   .Where(c => c.User.Id == ID)
+                   .Include(ind=>ind.Products)
+                   .Where(c => c.Id == ID)
                    .FirstOrDefault();
             // -> rezultat concret
             return result;

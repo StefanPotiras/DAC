@@ -9,10 +9,11 @@ namespace DAC.Entities
     {
         //public User Id_user { get; set; }
         public ICollection<Product> Products { get; set; }
+        public User User { get; set; }
+
         public Cart()
         {
             Products = new HashSet<Product>();
         }
-       public User User { get; set; }
     }
 }

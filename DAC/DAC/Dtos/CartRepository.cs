@@ -1,4 +1,5 @@
 ﻿using DAC.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +25,8 @@ namespace DAC.Repositories
 
                    // WHERE u.Email = @email 
                    // IQueryable pana aici -> rezultatul nu e concret
+                   .Include(u => u.Products)
+                   .Include(u => u.User)                 
                    .Where(c => c.User.Id == ID)
 
                    .FirstOrDefault();

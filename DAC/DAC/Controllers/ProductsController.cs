@@ -48,7 +48,7 @@ namespace DAC.Controllers
         }
 
         [HttpPut]
-        [Route("product")]
+        [Route("addProduct")]
         public ActionResult<bool> AddProducts([FromBody] ProductAdd product)
         {
             var productFull = _unitOfWork.Products.GetProductBy(Guid.Parse(product.Product));
