@@ -8,14 +8,14 @@ namespace DAC.Repositories
 {
     public interface ICartRepository : IRepositoryBase<Cart>
     {
-        Cart GetCartBy(Guid ID);
+        Cart GetCartBy(Guid? ID);
     }
 
     public class CartRepository : RepositoryBase<Cart>, ICartRepository
     {
         public CartRepository(ShopContext context) : base(context) { }
 
-        public Cart GetCartBy(Guid ID)
+        public Cart GetCartBy(Guid? ID)
         {
             var result = GetRecords()
 

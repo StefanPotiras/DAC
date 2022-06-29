@@ -7,57 +7,72 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using DAC;
 using DAC.Entities;
-using DAC.Dtos;
 using DAC.Repositories;
+using DAC.Dtos;
 
 namespace DAC.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductsController : WebApiController
+    public class OrdersController : WebApiController
     {
         private readonly ShopContext _context;
         private readonly IUnitOfWork _unitOfWork;
         private readonly ICustomerAuthService _authorization;
-        public ProductsController(ShopContext context, IUnitOfWork unitOfWork, ICustomerAuthService authorization)
+        public OrdersController(ShopContext context, IUnitOfWork unitOfWork, ICustomerAuthService authorization)
         {
             _context = context;
             _unitOfWork = unitOfWork;
             _authorization = authorization;
         }
 
-        // GET: api/Products
+        // GET: api/Orders
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
+        public async Task<ActionResult<IEnumerable<Order>>> GetOrders()
         {
-            return await _context.Products.ToListAsync();
+            return await _context.Orders.ToListAsync();
         }
 
-        // GET: api/Products/5
+        // GET: api/Orders/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Product>> GetProduct(Guid id)
+        public async Task<ActionResult<Order>> GetOrder(Guid id)
         {
-            var product = await _context.Products.FindAsync(id);
+            var order = await _context.Orders.FindAsync(id);
 
-            if (product == null)
+            if (order == null)
             {
                 return NotFound();
             }
 
-            return product;
+            return order;
         }
 
         [HttpPut]
-        [Route("product")]
-        public ActionResult<bool> AddProducts([FromBody] ProductAdd product)
+        [Route("orderItem")]
+        public ActionResult<bool> AddOrders()
         {
-            var productFull = _unitOfWork.Products.GetProductBy(Guid.Parse(product.Product));
             var userId = GetUserId();
             if (userId == null) return Unauthorized();
 
+            var cart = _unitOfWork.Carts.GetCartBy(userId);
+
+            var product = _context.Carts
+                .Include(cart => cart.Products)
+                .Include(roomType => roomType.Id)
+                .Include(roomType => roomType.User)
+                .Include(roomType => roomType.CreatedAt).Where(rt => rt.User.Id == userId);
+
             var user = _unitOfWork.Users.GetUserById((Guid)userId);
-            var cart = _unitOfWork.Carts.GetCartBy(user.Id);
-            cart.Products.Add(productFull);
+
+            Order newOrder = new Order()
+            {
+                OrderStatus = Order.EOrderStatus.Processing,
+                User = user,
+                Products = cart.Products
+            };
+            _unitOfWork.Orders.Insert(newOrder);
+
+            cart.Products.Clear();
 
             _context.Entry(cart).State = EntityState.Modified;
             _context.SaveChanges();
@@ -66,17 +81,17 @@ namespace DAC.Controllers
 
         }
 
-        // PUT: api/Products/5
+        // PUT: api/Orders/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutProduct(Guid id, Product product)
+        public async Task<IActionResult> PutOrder(Guid id, Order order)
         {
-            if (id != product.Id)
+            if (id != order.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(product).State = EntityState.Modified;
+            _context.Entry(order).State = EntityState.Modified;
 
             try
             {
@@ -84,7 +99,7 @@ namespace DAC.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ProductExists(id))
+                if (!OrderExists(id))
                 {
                     return NotFound();
                 }
@@ -97,36 +112,36 @@ namespace DAC.Controllers
             return NoContent();
         }
 
-        // POST: api/Products
+        // POST: api/Orders
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Product>> PostProduct(Product product)
+        public async Task<ActionResult<Order>> PostOrder(Order order)
         {
-            _context.Products.Add(product);
+            _context.Orders.Add(order);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetProduct", new { id = product.Id }, product);
+            return CreatedAtAction("GetOrder", new { id = order.Id }, order);
         }
 
-        // DELETE: api/Products/5
+        // DELETE: api/Orders/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteProduct(Guid id)
+        public async Task<IActionResult> DeleteOrder(Guid id)
         {
-            var product = await _context.Products.FindAsync(id);
-            if (product == null)
+            var order = await _context.Orders.FindAsync(id);
+            if (order == null)
             {
                 return NotFound();
             }
 
-            _context.Products.Remove(product);
+            _context.Orders.Remove(order);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool ProductExists(Guid id)
+        private bool OrderExists(Guid id)
         {
-            return _context.Products.Any(e => e.Id == id);
+            return _context.Orders.Any(e => e.Id == id);
         }
     }
 }

@@ -29,24 +29,7 @@ namespace DAC.Controllers
             _unitOfWork = unitOfWork;
             _authorization = authorization;
         }
-        [HttpPut]
-        [Route("product")]
-        public ActionResult<bool> AddProducts([FromBody] ProductAdd product)
-        {
-            var productFull = _unitOfWork.Products.GetProductBy(Guid.Parse(product.Product));
-            var userId = GetUserId();
-            if (userId == null) return Unauthorized();
 
-            var user = _unitOfWork.Users.GetUserById((Guid)userId);
-            var cart = _unitOfWork.Carts.GetCartBy(user.Id);
-            cart.Products.Add(productFull);
-            //user.Cart.Products.Add(productFull);
-            _context.Entry(cart).State = EntityState.Modified;
-            _context.SaveChanges();
-
-            return Ok();
-
-        }
 
 
         [HttpPost]

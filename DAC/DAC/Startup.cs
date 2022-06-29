@@ -102,6 +102,7 @@ namespace DAC
             services.AddScoped<IUserRepository, Dtos.UserRepository>();
             services.AddScoped<IProductRepository, Repositories.ProductRepository>();
             services.AddScoped<ICartRepository, Repositories.CartRepository>();
+            services.AddScoped<IOrderRepository, Repositories.OrderRepository>();
             //Services
             services.AddScoped<ICustomerAuthService, CustomerAuthService>();
         }

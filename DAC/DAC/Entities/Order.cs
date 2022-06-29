@@ -12,7 +12,7 @@ namespace DAC.Entities
 
         public User User { get; set; }
         public ICollection<Product> Products { get; set; }
-        Order()
+        public Order()
         {
             User = new User();
             Products = new HashSet<Product>();

@@ -13,6 +13,7 @@ namespace DAC.Repositories
         IUserRepository Users { get; }
         IProductRepository Products { get; }
         ICartRepository Carts { get; }
+        IOrderRepository Orders { get; }
         Task<bool> SaveChangesAsync();
 
     }
@@ -21,24 +22,24 @@ namespace DAC.Repositories
 
         private readonly DbContext _efDbContext;
         public IUserRepository Users { get; set; }
-
         public IProductRepository Products { get; set; }
 
         public ICartRepository Carts { get; set; }
-
+        public IOrderRepository Orders { get; set; }
         public UnitOfWork
         (
             ShopContext efDbContext,
             IUserRepository users,
             IProductRepository productRepository,
-            ICartRepository cartRepository
+            ICartRepository cartRepository,
+            IOrderRepository orderRepository
                 )
         {
             _efDbContext = efDbContext;
             Users = users;
             Products = productRepository;
             Carts = cartRepository;
-
+            Orders = orderRepository;
 
         }
 
