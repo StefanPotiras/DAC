@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using DAC;
 using DAC.Entities;
 using DAC.Repositories;
+using Microsoft.AspNetCore.Authorization;
+using DAC.Dtos;
 
 namespace DAC.Controllers
 {
@@ -18,22 +20,64 @@ namespace DAC.Controllers
         private readonly ShopContext _context;
 
         private readonly IUnitOfWork _unitOfWork;
-
         private readonly ICustomerAuthService _authorization;
-        public CartsController(ShopContext context)
+
+        public CartsController(ShopContext context, IUnitOfWork unitOfWork, ICustomerAuthService authorization)
         {
             _context = context;
+            _unitOfWork = unitOfWork;
+            _authorization = authorization;
         }
 
-        // GET: api/Carts
+        
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<IEnumerable<Cart>>> GetCarts()
         {
             return await _context.Carts.ToListAsync();
         }
 
-        // GET: api/Carts/5
+        [HttpGet]
+        [Authorize(Roles = "User")]
+        [Route("cart")]
+        public ActionResult<bool> GetOrderHist()
+        {
+            var userId = GetUserId();
+            if (userId == null) return Unauthorized();
+            var cart = _unitOfWork.Carts.GetCartById(userId);
+            return Ok(cart);
+
+        }
+
+
+        [HttpPut]
+        [Authorize(Roles = "User")]
+        [Route("updateCart")]
+         public async Task<IActionResult> UpdateCart(ProductAdd product)
+        {
+            var userId = GetUserId();
+            if (userId == null) return Unauthorized();
+            
+            var cart = _unitOfWork.Carts.GetCartBy(userId);
+            if (cart == null)
+                return BadRequest("No cart");
+            else
+                if (cart.Products.Count == 0)
+                return BadRequest("No product in cart");
+            var productDb = _unitOfWork.Products.GetProductBy(Guid.Parse(product.Product));
+            if (productDb == null)
+                return BadRequest("Productul nu exista");
+
+            cart.Products.Remove(productDb);
+            var saveResult = await _unitOfWork.SaveChangesAsync();
+
+            return Ok(saveResult);
+
+          
+        }
+
         [HttpGet("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<Cart>> GetCart(Guid id)
         {
             var cart = await _context.Carts.FindAsync(id);
@@ -46,9 +90,9 @@ namespace DAC.Controllers
             return cart;
         }
 
-        // PUT: api/Carts/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+   
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> PutCart(Guid id, Cart cart)
         {
             if (id != cart.Id)
@@ -78,7 +122,7 @@ namespace DAC.Controllers
         }
 
         // POST: api/Carts
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+       
         [HttpPost]
         public async Task<ActionResult<Cart>> PostCart(Cart cart)
         {
@@ -90,6 +134,7 @@ namespace DAC.Controllers
 
         // DELETE: api/Carts/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteCart(Guid id)
         {
             var cart = await _context.Carts.FindAsync(id);

@@ -35,9 +35,7 @@ namespace DAC.Repositories
                ? _dbSet
                : _dbSet.Where(entity => entity.DeletedAt == null);
 
-            return asNoTracking
-                ? query.AsNoTracking().ToList()
-                : query.ToList();
+            return query.ToList();
         }
 
         public T GetById(Guid id, bool asNoTracking = false)

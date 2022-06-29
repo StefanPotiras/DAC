@@ -9,6 +9,7 @@ using DAC;
 using DAC.Entities;
 using DAC.Repositories;
 using DAC.Dtos;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DAC.Controllers
 {
@@ -26,15 +27,28 @@ namespace DAC.Controllers
             _authorization = authorization;
         }
 
-        // GET: api/Orders
+        
         [HttpGet]
+        [Authorize(Roles = "Amin")]
         public async Task<ActionResult<IEnumerable<Order>>> GetOrders()
         {
             return await _context.Orders.ToListAsync();
         }
 
-        // GET: api/Orders/5
+        [HttpGet]
+        [Authorize(Roles = "User")]
+        [Route("allOrders")]
+        public ActionResult<bool> GetOrderHist()
+        {
+            var userId = GetUserId();
+            if (userId == null) return Unauthorized();
+            var allOrders = _unitOfWork.Orders.GetOrderByUser(userId);       
+            return Ok(allOrders);
+           
+        }
+
         [HttpGet("{id}")]
+        [Authorize(Roles = "User,Admin")]
         public async Task<ActionResult<Order>> GetOrder(Guid id)
         {
             var order = await _context.Orders.FindAsync(id);
@@ -49,13 +63,15 @@ namespace DAC.Controllers
 
         [HttpPut]
         [Route("orderItem")]
+        [Authorize(Roles = "User")]
         public async Task<ActionResult<bool>> AddOrdersAsync()
         {
             var userId = GetUserId();
             if (userId == null) return Unauthorized();
 
             var cart = _unitOfWork.Carts.GetCartBy(userId);
-              
+             if(cart.Products.Count==0)
+                return BadRequest("Nu ai produse in cos");
             var user = _unitOfWork.Users.GetUserById((Guid)userId);
 
             Order newOrder = new Order()
@@ -76,15 +92,13 @@ namespace DAC.Controllers
             _context.SaveChanges();
 
 
-            return Ok(saveResult);
-
-            
+            return Ok(saveResult);          
                   
         }
 
-        // PUT: api/Orders/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        // PUT: api/Orders/5     
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> PutOrder(Guid id, Order order)
         {
             if (id != order.Id)
@@ -113,19 +127,10 @@ namespace DAC.Controllers
             return NoContent();
         }
 
-        // POST: api/Orders
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Order>> PostOrder(Order order)
-        {
-            _context.Orders.Add(order);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetOrder", new { id = order.Id }, order);
-        }
-
+      
         // DELETE: api/Orders/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteOrder(Guid id)
         {
             var order = await _context.Orders.FindAsync(id);

@@ -1,4 +1,5 @@
-﻿using DAC.Entities;
+﻿using DAC.Dtos;
+using DAC.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ namespace DAC.Repositories
     public interface ICartRepository : IRepositoryBase<Cart>
     {
         Cart GetCartBy(Guid? ID);
+        CartDtos GetCartById(Guid? Id);
     }
 
     public class CartRepository : RepositoryBase<Cart>, ICartRepository
@@ -32,6 +34,39 @@ namespace DAC.Repositories
                    .FirstOrDefault();
             // -> rezultat concret
             return result;
+        }
+
+        public CartDtos GetCartById(Guid? Id)
+        {
+            var result = GetRecords()
+                   .Include(ind => ind.Products)              
+                   .Where(c => c.User.Id == Id)
+                   .FirstOrDefault();
+
+
+
+            List<ProductsDto> products = new List<ProductsDto>();
+            decimal totalPrice = 0;
+            foreach (var indexP in result.Products)
+            {
+                products.Add(new ProductsDto()
+                {
+                    Name = indexP.Name,
+                    Description = indexP.Description,
+                    Price = indexP.Price,
+                    NumberOfItems = indexP.NumberOfItems
+                });
+                totalPrice += indexP.Price;
+            }
+                     
+            CartDtos cart = new CartDtos() {
+                Products=products,
+                Id=result.Id,
+                TotalPrice=totalPrice
+            };
+              
+                       
+            return cart;
         }
     }
 }

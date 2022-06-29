@@ -9,6 +9,7 @@ using DAC;
 using DAC.Entities;
 using DAC.Dtos;
 using DAC.Repositories;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DAC.Controllers
 {
@@ -26,7 +27,8 @@ namespace DAC.Controllers
             _authorization = authorization;
         }
 
-        // GET: api/Products
+       
+        
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
         {
@@ -49,6 +51,7 @@ namespace DAC.Controllers
 
         [HttpPut]
         [Route("addProduct")]
+        [Authorize(Roles = "User")]
         public ActionResult<bool> AddProducts([FromBody] ProductAdd product)
         {
             var productFull = _unitOfWork.Products.GetProductBy(Guid.Parse(product.Product));
@@ -66,8 +69,7 @@ namespace DAC.Controllers
 
         }
 
-        // PUT: api/Products/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        // PUT: api/Products/5      
         [HttpPut("{id}")]
         public async Task<IActionResult> PutProduct(Guid id, Product product)
         {
@@ -98,7 +100,6 @@ namespace DAC.Controllers
         }
 
         // POST: api/Products
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Product>> PostProduct(Product product)
         {
