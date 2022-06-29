@@ -121,19 +121,19 @@ namespace DAC.Controllers
       
         // DELETE: api/Orders/5
         [HttpDelete("{id}")]
-        [Authorize(Roles = "Admin")]
+       // [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteOrder(Guid id)
         {
-            var order = await _context.Orders.FindAsync(id);
+            var order = _unitOfWork.Orders.GetById(id);
             if (order == null)
             {
                 return NotFound();
             }
 
-            _context.Orders.Remove(order);
-            await _context.SaveChangesAsync();
+            _unitOfWork.Orders.Delete(order);
 
-            return NoContent();
+            var saveResult = await _unitOfWork.SaveChangesAsync();
+            return Ok(saveResult);
         }
 
         private bool OrderExists(Guid id)

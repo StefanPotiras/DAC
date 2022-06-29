@@ -45,7 +45,9 @@ namespace DAC.Repositories
 
                        OrderStatus = index.OrderStatus,
                        Id = index.Id,
-                       TotalPrice = index.Products.Sum(item => item.Price)
+                       TotalPrice = index.Products.Sum(item => item.Price),
+                       // DeletedAt=index.DeletedAt
+
 
                    }).ToList(); ;
 

@@ -79,7 +79,7 @@ namespace DAC.Repositories
             var result = includeDeleted ?
                 _dbSet.Where(e => e.DeletedAt != null)
                 :
-                _dbSet;
+                _dbSet.Where(e => e.DeletedAt == null);
 
             return asNoTracking ? result.AsNoTracking() : result;
         }

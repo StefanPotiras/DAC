@@ -81,7 +81,7 @@ namespace DAC.Controllers
 
         // GET: api/Users
         [HttpGet]
-        [Authorize(Roles = "User")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
             return await _context.Users.ToListAsync();
@@ -104,6 +104,7 @@ namespace DAC.Controllers
         // PUT: api/Users/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> PutUser(Guid id, User user)
         {
             if (id != user.Id)
@@ -146,18 +147,19 @@ namespace DAC.Controllers
 
         // DELETE: api/Users/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteUser(Guid id)
         {
-            var user = await _context.Users.FindAsync(id);
-            if (user == null)
+            var users = _unitOfWork.Users.GetById(id);
+            if (users == null)
             {
                 return NotFound();
             }
 
-            _context.Users.Remove(user);
-            await _context.SaveChangesAsync();
+            _unitOfWork.Users.Delete(users);
 
-            return NoContent();
+            var saveResult = await _unitOfWork.SaveChangesAsync();
+            return Ok(saveResult);
         }
 
         private bool UserExists(Guid id)
