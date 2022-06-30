@@ -89,8 +89,11 @@ namespace DAC.Controllers
                 order.Products.Add(index);
 
              cart.Products.Clear();
-            _context.Entry(cart).State = EntityState.Modified;
-            _context.SaveChanges();
+
+            _unitOfWork.Carts.Update(cart);
+            _unitOfWork.Orders.Update(order);
+
+            saveResult = await _unitOfWork.SaveChangesAsync();
 
 
             return Ok(saveResult);          
@@ -131,6 +134,7 @@ namespace DAC.Controllers
             }
 
             _unitOfWork.Orders.Delete(order);
+
 
             var saveResult = await _unitOfWork.SaveChangesAsync();
             return Ok(saveResult);

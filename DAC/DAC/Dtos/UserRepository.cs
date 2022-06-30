@@ -1,5 +1,6 @@
 ﻿using DAC.Entities;
 using DAC.Repositories;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace DAC.Dtos
     public interface IUserRepository : IRepositoryBase<User>
     {
         User GetUserByUsername(string name);
-        User GetUserById(Guid ID);
+        User GetUserById(Guid? ID);
       
     }
 
@@ -20,7 +21,7 @@ namespace DAC.Dtos
 
         public UserRepository(ShopContext context) : base(context) { }
 
-        public User GetUserById(Guid ID)
+        public User GetUserById(Guid? ID)
         {
             //SELECT TOP(1) * from Users as u
             var result = GetRecords()
@@ -29,7 +30,7 @@ namespace DAC.Dtos
 
 
                 // WHERE u.Email = @email 
-                // IQueryable pana aici -> rezultatul nu e concret
+                // IQueryable pana aici -> rezultatul nu e concret             
                 .Where(u => u.Id == ID)
 
                 .FirstOrDefault();

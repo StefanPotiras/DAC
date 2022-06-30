@@ -69,6 +69,8 @@ namespace DAC.Controllers
                 return BadRequest("Productul nu exista");
 
             cart.Products.Remove(productDb);
+
+            _unitOfWork.Carts.Update(cart);
             var saveResult = await _unitOfWork.SaveChangesAsync();
 
             return Ok(saveResult);

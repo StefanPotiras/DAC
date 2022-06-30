@@ -12,11 +12,27 @@ namespace DAC.Repositories
     {
         Order GetOrderBy(Guid ID);
         public ICollection<OrderDtos> GetOrderByUser(Guid? Id);
+        public ICollection<Order> DeleteByID(Guid? Id);
     }
 
     public class OrderRepository : RepositoryBase<Order>, IOrderRepository
     {
         public OrderRepository(ShopContext context) : base(context) { }
+
+        public ICollection<Order> DeleteByID(Guid? Id)
+        {
+            var result = GetRecords()                
+                   .Where(c => c.User.Id == Id)
+                   .ToList();
+
+            foreach(var index in result)
+            {
+                Delete(index);
+            }
+
+            return result;
+           
+        }
 
         public Order GetOrderBy(Guid ID)
         {
@@ -34,7 +50,7 @@ namespace DAC.Repositories
                    .Where(c => c.User.Id == Id)
                    .ToList().Select(index => new OrderDtos
                    {
-                       Products = index.Products.Select(prod => new ProductsDto
+                       Products = index.Products.Where(index=>index.DeletedAt==null).Select(prod => new ProductsDto
                        {
                            Description = prod.Description,
                            Price = prod.Price,

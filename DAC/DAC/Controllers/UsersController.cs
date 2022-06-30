@@ -103,51 +103,30 @@ namespace DAC.Controllers
 
         // PUT: api/Users/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> PutUser(Guid id, User user)
+        [HttpPut]
+       // [Authorize(Roles = "User")]
+        [Route("changePassword")]
+        public async Task<ActionResult<bool>> PutUser([FromBody]ChangePassDtos password)
         {
-            if (id != user.Id)
+            var userId = GetUserId();
+            if (userId ==null)
             {
                 return BadRequest();
             }
+            var user = _unitOfWork.Users.GetUserById(userId); 
+            var hashedPassword = _authorization.HashPassword(password.Password);
+            user.Password = hashedPassword;
+            _unitOfWork.Users.Update(user);
 
-            _context.Entry(user).State = EntityState.Modified;
+            var saveResult = await _unitOfWork.SaveChangesAsync();
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!UserExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            return Ok(saveResult);
         }
 
-        // POST: api/Users
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<User>> PostUser(User user)
-        {
-           
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetUser", new { id = user.Id }, user);
-        }
-
+      
         // DELETE: api/Users/5
         [HttpDelete("{id}")]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteUser(Guid id)
         {
             var users = _unitOfWork.Users.GetById(id);
@@ -157,7 +136,10 @@ namespace DAC.Controllers
             }
 
             _unitOfWork.Users.Delete(users);
-
+            var cart=_unitOfWork.Carts.GetCartBy(id);
+            _unitOfWork.Carts.Delete(cart);
+            _unitOfWork.Orders.DeleteByID(id);
+                     
             var saveResult = await _unitOfWork.SaveChangesAsync();
             return Ok(saveResult);
         }

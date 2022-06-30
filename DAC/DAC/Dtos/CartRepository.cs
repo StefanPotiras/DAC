@@ -48,15 +48,17 @@ namespace DAC.Repositories
             List<ProductsDto> products = new List<ProductsDto>();
             decimal totalPrice = 0;
             foreach (var indexP in result.Products)
-            {
-                products.Add(new ProductsDto()
+            { if (indexP.DeletedAt == null)
                 {
-                    Name = indexP.Name,
-                    Description = indexP.Description,
-                    Price = indexP.Price,
-                    NumberOfItems = indexP.NumberOfItems
-                });
-                totalPrice += indexP.Price;
+                    products.Add(new ProductsDto()
+                    {
+                        Name = indexP.Name,
+                        Description = indexP.Description,
+                        Price = indexP.Price,
+                        NumberOfItems = indexP.NumberOfItems
+                    });
+                    totalPrice += indexP.Price;
+                }
             }
                      
             CartDtos cart = new CartDtos() {
