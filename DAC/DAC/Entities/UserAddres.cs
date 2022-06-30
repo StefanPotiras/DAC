@@ -20,5 +20,10 @@ namespace DAC.Entities
         public byte StreetNr { get; set; }
 
         public User User;
+
+        public UserAddres()
+        {
+
+        }
     }
 }

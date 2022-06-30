@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+
 namespace DAC.Repositories
 {
     public interface IUnitOfWork
@@ -14,6 +15,8 @@ namespace DAC.Repositories
         IProductRepository Products { get; }
         ICartRepository Carts { get; }
         IOrderRepository Orders { get; }
+        IAddressRepository UserAdresses { get; }
+        IPaymentRepository Payments { get; }
         Task<bool> SaveChangesAsync();
 
     }
@@ -23,16 +26,20 @@ namespace DAC.Repositories
         private readonly DbContext _efDbContext;
         public IUserRepository Users { get; set; }
         public IProductRepository Products { get; set; }
-
         public ICartRepository Carts { get; set; }
         public IOrderRepository Orders { get; set; }
+        public IAddressRepository UserAdresses { get; set; }
+        public IPaymentRepository Payments { get; set; }
         public UnitOfWork
         (
             ShopContext efDbContext,
             IUserRepository users,
             IProductRepository productRepository,
             ICartRepository cartRepository,
-            IOrderRepository orderRepository
+            IOrderRepository orderRepository,
+            IAddressRepository addressRepository,
+            IPaymentRepository payments
+
                 )
         {
             _efDbContext = efDbContext;
@@ -40,7 +47,8 @@ namespace DAC.Repositories
             Products = productRepository;
             Carts = cartRepository;
             Orders = orderRepository;
-
+            UserAdresses = addressRepository;
+            Payments = payments;
         }
 
         public async Task<bool> SaveChangesAsync()

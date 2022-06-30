@@ -20,5 +20,10 @@ namespace DAC.Entities
         public string LastName { get; set; }
 
         public User User { get; set; }
+
+        public UserPayment()
+        {
+
+        }
     }
 }
